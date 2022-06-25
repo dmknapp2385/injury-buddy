@@ -1,4 +1,4 @@
-const { Schema, model, Mongoose } = require('mongoose');
+const { Schema, model } = require('mongoose');
 
 const injurySchema = new Schema({
   location: {
@@ -9,11 +9,11 @@ const injurySchema = new Schema({
     type: String,
     trim: true
   },
-  howInjured:{
-    type: Text, 
+  howInjured: {
+    type: String,
     trim: true,
     maxlenght: 250
-  }, 
+  },
   cronic: {
     type: Boolean,
     required: true,
@@ -26,6 +26,6 @@ const injurySchema = new Schema({
   }
 });
 
-const Injury = mongoose.model('Injury', injurySchema);
-module.exports - Injury;
+const Injury = model('Injury', injurySchema);
 
+module.exports = Injury;

@@ -1,39 +1,54 @@
-const { Schema } = require('mongoose');
+const { Schema, model } = require('mongoose');
 
 const bcrypt = require('bcrypt');
-const Injury = require('./Injury');
 
-const userSchema = new Schema({
-  username: {
-    type: String,
-    required: true,
-    unique: true,
-    trim: true
+const userSchema = new Schema(
+  {
+    username: {
+      type: String,
+      required: true,
+      unique: true,
+      trim: true
+    },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      match: [
+        /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+        'Please fill a valid email address'
+      ]
+    },
+    firstName: {
+      type: String,
+      trim: true,
+      required: true
+    },
+    lastName: {
+      type: String,
+      trim: true,
+      required: true
+    },
+    password: {
+      type: String,
+      required: true,
+      minlength: 8
+    },
+    friends: {
+      type: Schema.Types.ObjectId,
+      ref: 'User'
+    },
+    injuries: {
+      type: Schema.Types.ObjectId,
+      ref: 'Injury'
+    }
   },
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-    match: [
-      /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-      'Please fill a valid email address'
-    ]
-  },
-  password: {
-    type: String,
-    required: true,
-    minlength: 8
-  },
-  friends: {
-    type: Schema.Types.ObjectId,
-    ref: 'User'
-  },
-  injuries: [Injury.schema], 
-  climbingType: {
-    type: String, 
-
+  {
+    toJSON: {
+      virtuals: true
+    }
   }
-});
+);
 
 // hooks
 userSchema.pre('save', async function (next) {
@@ -46,11 +61,15 @@ userSchema.pre('save', async function (next) {
 });
 
 // compare password for login
-
 userSchema.methods.isCorrectPassword = async function (password) {
-  return await bcrypt.compare(password, this.password);
+  return bcrypt.compare(password, this.password);
 };
 
-const User = mongoose.model('User', userSchema);
+// virtuals
+userSchema.virtual('friendCount').get(function () {
+  return this.friends.length;
+});
+
+const User = model('User', userSchema);
 
 module.exports = User;
