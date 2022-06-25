@@ -12,7 +12,6 @@ const { typeDefs, resolvers } = require('./Schema');
 
 // import the database from config file
 const db = require('./config/connection');
-const { start } = require('repl');
 
 //define the port for express
 const PORT = process.env.PORT || 3001;

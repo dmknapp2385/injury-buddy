@@ -77,6 +77,9 @@ db.once('open', async () => {
       { $addToSet: { injuries: injuryData._id } }
     );
   }
+
+  const users = await User.find().populate({path: 'friends', select: '_id'}).populate({path: 'injuries', select:'_id'})
+  console.log(users)
   console.log('All done with seeding!');
   process.exit(0);
 });

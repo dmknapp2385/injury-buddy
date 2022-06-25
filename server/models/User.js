@@ -34,14 +34,18 @@ const userSchema = new Schema(
       required: true,
       minlength: 8
     },
-    friends: {
-      type: Schema.Types.ObjectId,
-      ref: 'User'
-    },
-    injuries: {
-      type: Schema.Types.ObjectId,
-      ref: 'Injury'
-    }
+    friends: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+      }
+    ],
+    injuries: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Injury'
+      }
+    ]
   },
   {
     toJSON: {

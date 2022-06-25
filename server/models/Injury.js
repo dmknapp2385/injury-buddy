@@ -23,7 +23,7 @@ const injurySchema = new Schema({
     type: Number,
     min: 0,
     default: 0
-  }
+  }, 
 });
 
 const Injury = model('Injury', injurySchema);
