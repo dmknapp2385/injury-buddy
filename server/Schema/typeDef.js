@@ -49,7 +49,7 @@ const typeDefs = gql`
     me: User
     users: [User]
     injuries: [Injury]
-    user: User
+    user(id: ID!): User
     injuryLocation(location: String!): [Injury]
   }
 

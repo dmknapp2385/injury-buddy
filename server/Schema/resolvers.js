@@ -36,6 +36,10 @@ const resolvers = {
     },
 
     // find user by id
+    user: async (parent, { id }) => {
+      const userData = await User.findById(id)
+      return userData
+    }
   }, 
   Mutation: {
     //login user
