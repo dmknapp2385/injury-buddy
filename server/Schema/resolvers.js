@@ -30,6 +30,10 @@ const resolvers = {
     }, 
 
     // find injury by location
+    injuryLocation: async (parent, {location}) => {
+      const injuryData = await Injury.find({ 'location': { $in: location } });
+      return injuryData;
+    },
 
     // find user by id
   }, 

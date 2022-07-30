@@ -9,8 +9,16 @@ const typeDefs = gql`
   }
 
   type Injury {
-    _id: ID
-    location: String
+    _id: ID!
+    location: String!
+    painType: String
+    howInjured: String
+    cronic: Boolean
+    timeInjured: Int
+  }
+
+  input InjuryInjury {
+    location: String!
     painType: String
     howInjured: String
     cronic: Boolean
