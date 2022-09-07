@@ -20,27 +20,27 @@ const resolvers = {
     users: async () => {
       const usersData = await User.find()
         .populate({ path: 'injuries' })
-        .populate({ path: 'friends'});
-      return (usersData);
+        .populate({ path: 'friends' });
+      return usersData;
     },
     // find all injuries
     injuries: async () => {
       const injuriesData = await Injury.find().select('-__v');
       return injuriesData;
-    }, 
+    },
 
     // find injury by location
-    injuryLocation: async (parent, {location}) => {
-      const injuryData = await Injury.find({ 'location': { $in: location } });
+    injuryLocation: async (parent, { location }) => {
+      const injuryData = await Injury.find({ location: { $in: location } });
       return injuryData;
     },
 
     // find user by id
     user: async (parent, { id }) => {
-      const userData = await User.findById(id)
-      return userData
+      const userData = await User.findById(id);
+      return userData;
     }
-  }, 
+  },
   Mutation: {
     //login user
     login: async (parent, { email, password }) => {
@@ -60,17 +60,26 @@ const resolvers = {
       return { token, user };
     },
     // add new user
-    signup: async (parent, {input}) => {
-      const newUser = await User.create(input)
+    signup: async (parent, { input }) => {
+      const newUser = await User.create(input);
       const token = signToken(newUser);
-      return {token, newUser}
-    }, 
+      return { token, newUser };
+    },
 
     // add injury
-    // remove injury
+    addInjury: async (parent, { input }, context) => {
+      if (context.user) {
+        const injury = await Injury.create(input);
+
+        const updatedUser = await User.findByIdAndUpdate(
+          { _id: context.user._id },
+          { $addToSet: { injuries: input._id} }, { new: true, runValidators: true}
+        );
+      }
+      return updatedUser 
+    }
+    // remove injury, 
     // add friend
-
-
   }
 };
 

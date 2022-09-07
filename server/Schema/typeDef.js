@@ -17,14 +17,6 @@ const typeDefs = gql`
     timeInjured: Int
   }
 
-  input InjuryInjury {
-    location: String!
-    painType: String
-    howInjured: String
-    cronic: Boolean
-    timeInjured: Int
-  }
-
   type User {
     _id: ID
     username: String
@@ -45,6 +37,15 @@ const typeDefs = gql`
     username: String!
   }
 
+  input newInjury {
+    _id: ID!
+    location: String!
+    painType: String
+    howInjured: String
+    cronic: Boolean
+    timeInjured: Int
+  }
+
   type Query {
     me: User
     users: [User]
@@ -56,6 +57,7 @@ const typeDefs = gql`
   type Mutation {
     login(email: String!, password: String!): Auth,
     signup(input: NewUser): Auth
+    addInjury(input: newInjury): User
   }
 `;
 
